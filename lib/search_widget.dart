@@ -5,7 +5,8 @@ import 'package:keyboard_visibility/keyboard_visibility.dart';
 import 'package:search_widget/widget/no_item_found.dart';
 
 typedef QueryListItemBuilder<T> = Widget Function(T item);
-typedef SelectedItemBuilder<T> = Widget Function(T item, VoidCallback deleteSelectedItem);
+typedef SelectedItemBuilder<T> = Widget Function(
+    T item, VoidCallback deleteSelectedItem);
 typedef QueryBuilder<T> = List<T> Function(String query, List<T> list);
 
 class SearchWidget<T> extends StatefulWidget {
@@ -96,7 +97,8 @@ class MySingleChoiceSearchState<T> extends State<SearchWidget<T>> {
   @override
   Widget build(BuildContext context) {
     print(widget.queryBuilder);
-    listContainerHeight = widget.listContainerHeight ?? MediaQuery.of(context).size.height / 4;
+    listContainerHeight =
+        widget.listContainerHeight ?? MediaQuery.of(context).size.height / 4;
 
     textField = Padding(
       padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
@@ -105,12 +107,15 @@ class MySingleChoiceSearchState<T> extends State<SearchWidget<T>> {
         focusNode: _focusNode,
         style: new TextStyle(fontSize: 16, color: Colors.grey[600]),
         decoration: new InputDecoration(
-          enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: Color(0x4437474F))),
-          focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: Theme.of(context).primaryColor)),
+          enabledBorder: OutlineInputBorder(
+              borderSide: BorderSide(color: Color(0x4437474F))),
+          focusedBorder: OutlineInputBorder(
+              borderSide: BorderSide(color: Theme.of(context).primaryColor)),
           suffixIcon: Icon(Icons.search),
           border: InputBorder.none,
           hintText: widget.hintText ?? "Search here...",
-          contentPadding: EdgeInsets.only(left: 16, right: 20, top: 14, bottom: 14),
+          contentPadding:
+              EdgeInsets.only(left: 16, right: 20, top: 14, bottom: 14),
         ),
         onChanged: (text) {
           if (text.trim().length > 0) {
@@ -118,7 +123,8 @@ class MySingleChoiceSearchState<T> extends State<SearchWidget<T>> {
             var filterList;
             filterList = widget.queryBuilder(text, widget.dataList);
             if (filterList == null) {
-              throw Exception("Filtered List cannot be null. Pass empty list instead");
+              throw Exception(
+                  "Filtered List cannot be null. Pass empty list instead");
             }
             _tempList.addAll(filterList);
             if (overlayEntry == null)
@@ -134,25 +140,31 @@ class MySingleChoiceSearchState<T> extends State<SearchWidget<T>> {
       ),
     );
 
-    Column column = new Column(mainAxisSize: MainAxisSize.min, crossAxisAlignment: CrossAxisAlignment.start, children: <Widget>[
-      (widget.hideSearchBoxWhenItemSelected && notifier.value != null)
-          ? SizedBox(
-              height: 0.0,
-            )
-          : CompositedTransformTarget(
-              link: this._layerLink,
-              child: textField,
-            ),
-      notifier.value != null
-          ? Container(
-              decoration: BoxDecoration(color: Colors.grey[200], borderRadius: BorderRadius.all(Radius.circular(4.0))),
-              margin: EdgeInsets.symmetric(horizontal: 16.0),
-              child: widget.selectedItemBuilder(notifier.value, onDeleteSelectedItem),
-            )
-          : SizedBox(
-              height: 0.0,
-            ),
-    ]);
+    Column column = new Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          (widget.hideSearchBoxWhenItemSelected && notifier.value != null)
+              ? SizedBox(
+                  height: 0.0,
+                )
+              : CompositedTransformTarget(
+                  link: this._layerLink,
+                  child: textField,
+                ),
+          notifier.value != null
+              ? Container(
+                  decoration: BoxDecoration(
+                      color: Colors.grey[200],
+                      borderRadius: BorderRadius.all(Radius.circular(4.0))),
+                  margin: EdgeInsets.symmetric(horizontal: 16.0),
+                  child: widget.selectedItemBuilder(
+                      notifier.value, onDeleteSelectedItem),
+                )
+              : SizedBox(
+                  height: 0.0,
+                ),
+        ]);
     return column;
   }
 
@@ -174,8 +186,12 @@ class MySingleChoiceSearchState<T> extends State<SearchWidget<T>> {
     final width = textFieldRenderBox.size.width;
     final RelativeRect position = new RelativeRect.fromRect(
       new Rect.fromPoints(
-        textFieldRenderBox.localToGlobal(textFieldRenderBox.size.topLeft(Offset.zero), ancestor: overlay),
-        textFieldRenderBox.localToGlobal(textFieldRenderBox.size.topRight(Offset.zero), ancestor: overlay),
+        textFieldRenderBox.localToGlobal(
+            textFieldRenderBox.size.topLeft(Offset.zero),
+            ancestor: overlay),
+        textFieldRenderBox.localToGlobal(
+            textFieldRenderBox.size.topRight(Offset.zero),
+            ancestor: overlay),
       ),
       Offset.zero & overlay.size,
     );
@@ -185,7 +201,11 @@ class MySingleChoiceSearchState<T> extends State<SearchWidget<T>> {
         left: position.left,
         width: width,
         child: CompositedTransformFollower(
-          offset: Offset(0, height - position.bottom < listContainerHeight ? (textBoxHeight + 6.0) : -(listContainerHeight - 8.0)),
+          offset: Offset(
+              0,
+              height - position.bottom < listContainerHeight
+                  ? (textBoxHeight + 6.0)
+                  : -(listContainerHeight - 8.0)),
           showWhenUnlinked: false,
           link: this._layerLink,
           child: new Container(
@@ -194,7 +214,10 @@ class MySingleChoiceSearchState<T> extends State<SearchWidget<T>> {
             child: Card(
               color: Colors.white,
               elevation: 5,
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(4.0))),
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.all(
+                Radius.circular(4.0),
+              )),
               child: _tempList.length > 0
                   ? Scrollbar(
                       child: ListView.separated(
@@ -206,7 +229,9 @@ class MySingleChoiceSearchState<T> extends State<SearchWidget<T>> {
                           return Material(
                             color: Colors.transparent,
                             child: InkWell(
-                              child: widget.popupListItemBuilder(_tempList.elementAt(index)),
+                              child: widget.popupListItemBuilder(
+                                _tempList.elementAt(index),
+                              ),
                               onTap: () {
                                 onDropDownItemTap(_tempList[index]);
                               },

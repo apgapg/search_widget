@@ -17,7 +17,8 @@ class NoItemFound extends StatelessWidget {
           ),
           Text(
             "No data found",
-            style: TextStyle(fontSize: 16.0, color: Colors.grey[900].withOpacity(0.7)),
+            style: TextStyle(
+                fontSize: 16.0, color: Colors.grey[900].withOpacity(0.7)),
           ),
         ],
       ),
