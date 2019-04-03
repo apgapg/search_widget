@@ -63,10 +63,13 @@ SearchWidget<LeaderBoard>(
 )
 ```
 ### Key Highlights
-- Adaptive Popup Position to prevent popup getting hidden behind keyboard
-<img src="https://raw.githubusercontent.com/apgapg/search_widget/master/src/s2.gif"  height = "400" alt="PieChart">
+- Adaptive Popup Position to prevent popup getting hidden behind keyboard   
 
-- Popup to scroll if this widget is used inside ScrollView so as to prevent popup getting hidden behind the soft keyboard
+<img src="https://raw.githubusercontent.com/apgapg/search_widget/master/src/s2.gif"  height = "400" alt="PieChart"> <img src="https://raw.githubusercontent.com/apgapg/search_widget/master/src/s1.gif" style="margin: 0px 4px"  height = "400" alt="PieChart">
+
+  
+- Popup to scroll with scroll gesture if this widget is used inside ScrollView  
+
 <img src="https://raw.githubusercontent.com/apgapg/search_widget/master/src/s3.gif"  height = "400" alt="PieChart">
 
 
