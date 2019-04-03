@@ -1,7 +1,7 @@
 # Search Widget [![GitHub stars](https://img.shields.io/github/stars/apgapg/search_widget.svg?style=social)](https://github.com/apgapg/search_widget) [![Twitter Follow](https://img.shields.io/twitter/url/https/@ayushpgupta.svg?style=social)](https://twitter.com/ayushpgupta) ![GitHub last commit](https://img.shields.io/github/last-commit/apgapg/search_widget.svg) [![Website shields.io](https://img.shields.io/website-up-down-green-red/http/shields.io.svg)](https://play.google.com/store/apps/details?id=com.coddu.flutterprofile)[![Open Source Love](https://badges.frapsoft.com/os/v2/open-source.svg?v=103)](https://github.com/apgapg/search_widget)
 
 
-This Flutter package provides a Search Widget for selection an option from a data list. Provides filtering of items based on the search text.
+This Flutter package provides a Search Widget for selecting an option from a data list. Provides filtering of items based on the search text.
 
 <img src="https://raw.githubusercontent.com/apgapg/search_widget/master/src/s1.gif"  height = "400" alt="PieChart">
 
@@ -72,6 +72,11 @@ SearchWidget<LeaderBoard>(
 
 <img src="https://raw.githubusercontent.com/apgapg/search_widget/master/src/s3.gif"  height = "400" alt="PieChart">
 
+## TODO
+
+- [ ] Add support for selecting multiple items
+- [ ] Add visibility bool to show selected item widget
+- [ ] Give support for onSelectedItem method to return selected item(s) directly
 
 # ⭐ My Flutter Packages
 - [pie_chart](https://pub.dartlang.org/packages/pie_chart)  [![GitHub stars](https://img.shields.io/github/stars/apgapg/pie_chart.svg?style=social)](https://github.com/apgapg/pie_chart)  Flutter Pie Chart with cool animation.
@@ -80,6 +85,7 @@ SearchWidget<LeaderBoard>(
 # ⭐ My Flutter Apps
 - [flutter_profile](https://github.com/apgapg/flutter_profile)  [![GitHub stars](https://img.shields.io/github/stars/apgapg/flutter_profile.svg?style=social)](https://github.com/apgapg/flutter_profile)  Showcase My Portfolio: Ayush P Gupta on Playstore.
 - [flutter_sankalan](https://github.com/apgapg/flutter_sankalan)  [![GitHub stars](https://img.shields.io/github/stars/apgapg/flutter_sankalan.svg?style=social)](https://github.com/apgapg/flutter_sankalan)  Flutter App which allows reading/uploading short stories.
+
 
 # 👍 Contribution
 1. Fork it
