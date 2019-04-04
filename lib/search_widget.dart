@@ -9,11 +9,16 @@ typedef SelectedItemBuilder<T> = Widget Function(
   T item,
   VoidCallback deleteSelectedItem,
 );
-typedef QueryBuilder<T> = List<T> Function(String query, List<T> list);
+typedef QueryBuilder<T> = List<T> Function(
+  String query,
+  List<T> list,
+);
+typedef TextFieldBuilder = Widget Function(
+  TextEditingController controller,
+  FocusNode focus,
+);
 
 class SearchWidget<T> extends StatefulWidget {
-  static const NoItemFound _noItemFound = NoItemFound();
-
   final List<T> dataList;
   final QueryListItemBuilder<T> popupListItemBuilder;
   final SelectedItemBuilder<T> selectedItemBuilder;
@@ -21,12 +26,8 @@ class SearchWidget<T> extends StatefulWidget {
   final double listContainerHeight;
   final String hintText;
   final QueryBuilder<T> queryBuilder;
-
+  final TextFieldBuilder textFieldBuilder;
   final Widget noFoundWidget;
-  final EdgeInsets padding, contentPadding;
-  final TextStyle textStyle;
-  final Widget prefixIcon, suffixIcon;
-  final InputBorder enabledBorder, focusedBorder;
 
   SearchWidget({
     Key key,
@@ -37,19 +38,8 @@ class SearchWidget<T> extends StatefulWidget {
     this.listContainerHeight,
     this.hintText,
     @required this.queryBuilder,
-    this.noFoundWidget = _noItemFound,
-    this.padding = const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
-    this.contentPadding = const EdgeInsets.only(
-      left: 16,
-      right: 20,
-      top: 14,
-      bottom: 14,
-    ),
-    this.textStyle = const TextStyle(fontSize: 16),
-    this.prefixIcon,
-    this.suffixIcon,
-    this.enabledBorder,
-    this.focusedBorder,
+    this.noFoundWidget,
+    this.textFieldBuilder,
   }) : super(key: key);
 
   @override
@@ -57,7 +47,7 @@ class SearchWidget<T> extends StatefulWidget {
 }
 
 class MySingleChoiceSearchState<T> extends State<SearchWidget<T>> {
-  TextEditingController _controller;
+  final _controller = TextEditingController();
   List<T> _list;
   List<T> _tempList;
   bool isFocused;
@@ -70,17 +60,16 @@ class MySingleChoiceSearchState<T> extends State<SearchWidget<T>> {
   double listContainerHeight;
   final LayerLink _layerLink = LayerLink();
   final textBoxHeight = 48.0;
+  final textController = TextEditingController();
 
   @override
   void initState() {
-    print(T);
     super.initState();
     init();
   }
 
   void init() {
     _tempList = List<T>();
-    _controller = TextEditingController();
     notifier = ValueNotifier(null);
     _focusNode = FocusNode();
     isFocused = false;
@@ -100,6 +89,28 @@ class MySingleChoiceSearchState<T> extends State<SearchWidget<T>> {
           overlayEntry.markNeedsBuild();
       }
     });
+    _controller.addListener(() {
+      var text = _controller.text;
+      if (text.trim().length > 0) {
+        _tempList.clear();
+        var filterList;
+        filterList = widget.queryBuilder(text, widget.dataList);
+        if (filterList == null) {
+          throw Exception(
+            "Filtered List cannot be null. Pass empty list instead",
+          );
+        }
+        _tempList.addAll(filterList);
+        if (overlayEntry == null)
+          onTap();
+        else
+          overlayEntry.markNeedsBuild();
+      } else {
+        _tempList.clear();
+        _tempList.addAll(_list);
+        overlayEntry.markNeedsBuild();
+      }
+    });
     KeyboardVisibilityNotification().addNewListener(
       onChange: (bool visible) {
         if (!visible) _focusNode.unfocus();
@@ -116,53 +127,33 @@ class MySingleChoiceSearchState<T> extends State<SearchWidget<T>> {
   @override
   Widget build(BuildContext context) {
     print(widget.queryBuilder);
-    listContainerHeight =
-        widget.listContainerHeight ?? MediaQuery.of(context).size.height / 4;
-
-    textField = Padding(
-      padding: widget.padding,
-      child: TextField(
-        controller: _controller,
-        focusNode: _focusNode,
-        style: widget.textStyle,
-        decoration: InputDecoration(
-          enabledBorder: widget.enabledBorder ??
-              OutlineInputBorder(
+    listContainerHeight = widget.listContainerHeight ?? MediaQuery.of(context).size.height / 4;
+    textField = widget.textFieldBuilder(_controller, _focusNode) ??
+        Padding(
+          padding: EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+          child: TextField(
+            controller: _controller,
+            focusNode: _focusNode,
+            style: new TextStyle(fontSize: 16, color: Colors.grey[600]),
+            decoration: InputDecoration(
+              enabledBorder: OutlineInputBorder(
                 borderSide: BorderSide(color: Color(0x4437474F)),
               ),
-          focusedBorder: widget.focusedBorder ??
-              OutlineInputBorder(
+              focusedBorder: OutlineInputBorder(
                 borderSide: BorderSide(color: Theme.of(context).primaryColor),
               ),
-          suffixIcon: widget.suffixIcon,
-          prefixIcon: widget.prefixIcon,
-          border: InputBorder.none,
-          hintText: widget.hintText ?? "Search here...",
-          contentPadding: widget.contentPadding,
-        ),
-        onChanged: (text) {
-          if (text.trim().length > 0) {
-            _tempList.clear();
-            var filterList;
-            filterList = widget.queryBuilder(text, widget.dataList);
-            if (filterList == null) {
-              throw Exception(
-                "Filtered List cannot be null. Pass empty list instead",
-              );
-            }
-            _tempList.addAll(filterList);
-            if (overlayEntry == null)
-              onTap();
-            else
-              overlayEntry.markNeedsBuild();
-          } else {
-            _tempList.clear();
-            _tempList.addAll(_list);
-            overlayEntry.markNeedsBuild();
-          }
-        },
-      ),
-    );
+              suffixIcon: Icon(Icons.search),
+              border: InputBorder.none,
+              hintText: "Search here...",
+              contentPadding: EdgeInsets.only(
+                left: 16,
+                right: 20,
+                top: 14,
+                bottom: 14,
+              ),
+            ),
+          ),
+        );
 
     Column column = Column(
       mainAxisSize: MainAxisSize.min,
@@ -221,54 +212,58 @@ class MySingleChoiceSearchState<T> extends State<SearchWidget<T>> {
       ),
       Offset.zero & overlay.size,
     );
-    overlayEntry = OverlayEntry(builder: (context) {
-      var height = (MediaQuery.of(context).size.height);
-      return Positioned(
-        left: position.left,
-        width: width,
-        child: CompositedTransformFollower(
-          offset: Offset(
+    overlayEntry = OverlayEntry(
+      builder: (context) {
+        var height = (MediaQuery.of(context).size.height);
+        return Positioned(
+          left: position.left,
+          width: width,
+          child: CompositedTransformFollower(
+            offset: Offset(
               0,
-              height - position.bottom < listContainerHeight
-                  ? (textBoxHeight + 6.0)
-                  : -(listContainerHeight - 8.0)),
-          showWhenUnlinked: false,
-          link: this._layerLink,
-          child: Container(
-            height: listContainerHeight,
-            margin: EdgeInsets.symmetric(horizontal: 12.0),
-            child: Card(
-              color: Colors.white,
-              elevation: 5,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.all(Radius.circular(4.0)),
-              ),
-              child: _tempList.length > 0
-                  ? Scrollbar(
-                      child: ListView.separated(
-                        padding: EdgeInsets.symmetric(vertical: 4.0),
-                        separatorBuilder: (context, index) => Divider(
-                              height: 1,
-                            ),
-                        itemBuilder: (context, index) => Material(
-                              color: Colors.transparent,
-                              child: InkWell(
-                                child: widget.popupListItemBuilder(
-                                  _tempList.elementAt(index),
-                                ),
-                                onTap: () =>
-                                    onDropDownItemTap(_tempList[index]),
+              height - position.bottom < listContainerHeight ? (textBoxHeight + 6.0) : -(listContainerHeight - 8.0),
+            ),
+            showWhenUnlinked: false,
+            link: this._layerLink,
+            child: Container(
+              height: listContainerHeight,
+              margin: EdgeInsets.symmetric(horizontal: 12.0),
+              child: Card(
+                color: Colors.white,
+                elevation: 5,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.all(Radius.circular(4.0)),
+                ),
+                child: _tempList.length > 0
+                    ? Scrollbar(
+                        child: ListView.separated(
+                          padding: EdgeInsets.symmetric(vertical: 4.0),
+                          separatorBuilder: (context, index) => Divider(
+                                height: 1,
                               ),
-                            ),
-                        itemCount: _tempList.length,
-                      ),
-                    )
-                  : widget.noFoundWidget,
+                          itemBuilder: (context, index) => Material(
+                                color: Colors.transparent,
+                                child: InkWell(
+                                  child: widget.popupListItemBuilder(
+                                    _tempList.elementAt(index),
+                                  ),
+                                  onTap: () => onDropDownItemTap(_tempList[index]),
+                                ),
+                              ),
+                          itemCount: _tempList.length,
+                        ),
+                      )
+                    : widget.noFoundWidget != null
+                        ? Center(
+                            child: widget.noFoundWidget,
+                          )
+                        : NoItemFound(),
+              ),
             ),
           ),
-        ),
-      );
-    });
+        );
+      },
+    );
     Overlay.of(context).insert(overlayEntry);
   }
 

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:search_widget/search_widget.dart';
-import 'package:search_widget/widget/no_item_found.dart';
 
 void main() => runApp(MyApp());
 
@@ -44,12 +43,8 @@ class _HomePageState extends State<HomePage> {
           padding: EdgeInsets.symmetric(vertical: 16.0),
           child: Column(
             children: <Widget>[
-              Container(
-                height: 200.0,
-                child: Text("Random space"),
-                alignment: Alignment.center,
-                color: Colors.grey[200],
-                padding: EdgeInsets.all(16.0),
+              SizedBox(
+                height: 16.0,
               ),
               SearchWidget<LeaderBoard>(
                 dataList: list,
@@ -58,9 +53,9 @@ class _HomePageState extends State<HomePage> {
                 queryBuilder: (String query, List<LeaderBoard> list) {
                   return list
                       .where(
-                        (LeaderBoard item) => item.username
-                            .toLowerCase()
-                            .contains(query.toLowerCase()),
+                        (LeaderBoard item) => item.username.toLowerCase().contains(
+                              query.toLowerCase(),
+                            ),
                       )
                       .toList();
                 },
@@ -108,28 +103,51 @@ class _HomePageState extends State<HomePage> {
                   );
                 },
                 // widget customization
-                noFoundWidget: NoItemFound(
-                  title: 'No items found',
-                  icon: Icons.cancel,
+                noFoundWidget: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: <Widget>[
+                    Icon(
+                      Icons.folder_open,
+                      size: 24,
+                      color: Colors.grey[900].withOpacity(0.7),
+                    ),
+                    SizedBox(width: 10.0),
+                    Text(
+                      "No Items Found",
+                      style: TextStyle(
+                        fontSize: 16.0,
+                        color: Colors.grey[900].withOpacity(0.7),
+                      ),
+                    ),
+                  ],
                 ),
-                padding: EdgeInsets.all(8),
-                contentPadding: EdgeInsets.all(16),
-                textStyle: TextStyle(fontSize: 20),
-                prefixIcon: Icon(Icons.search),
-                suffixIcon: Icon(Icons.list),
-                enabledBorder: OutlineInputBorder(
-                  borderSide: BorderSide(color: Color(0x4437474F)),
-                ),
-                focusedBorder: OutlineInputBorder(
-                  borderSide: BorderSide(color: Theme.of(context).primaryColor),
-                ),
-              ),
-              Container(
-                height: 600.0,
-                child: Text("Random space"),
-                alignment: Alignment.center,
-                color: Colors.grey[200],
-                padding: EdgeInsets.all(16.0),
+                textFieldBuilder: (TextEditingController controller, FocusNode focusNode) {
+                  return Padding(
+                    padding: EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+                    child: TextField(
+                      controller: controller,
+                      focusNode: focusNode,
+                      style: new TextStyle(fontSize: 16, color: Colors.grey[600]),
+                      decoration: InputDecoration(
+                        enabledBorder: OutlineInputBorder(
+                          borderSide: BorderSide(color: Color(0x4437474F)),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderSide: BorderSide(color: Theme.of(context).primaryColor),
+                        ),
+                        suffixIcon: Icon(Icons.search),
+                        border: InputBorder.none,
+                        hintText: "Search here...",
+                        contentPadding: EdgeInsets.only(
+                          left: 16,
+                          right: 20,
+                          top: 14,
+                          bottom: 14,
+                        ),
+                      ),
+                    ),
+                  );
+                },
               ),
             ],
           ),
