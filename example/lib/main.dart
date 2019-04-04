@@ -33,7 +33,6 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    print(list.runtimeType);
     return Scaffold(
       appBar: AppBar(
         title: Text("Search Widget"),
