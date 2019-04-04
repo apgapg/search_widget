@@ -12,6 +12,8 @@ typedef SelectedItemBuilder<T> = Widget Function(
 typedef QueryBuilder<T> = List<T> Function(String query, List<T> list);
 
 class SearchWidget<T> extends StatefulWidget {
+  static const NoItemFound _noItemFound = NoItemFound();
+
   final List<T> dataList;
   final QueryListItemBuilder<T> popupListItemBuilder;
   final SelectedItemBuilder<T> selectedItemBuilder;
@@ -19,6 +21,12 @@ class SearchWidget<T> extends StatefulWidget {
   final double listContainerHeight;
   final String hintText;
   final QueryBuilder<T> queryBuilder;
+
+  final Widget noFoundWidget;
+  final EdgeInsets padding, contentPadding;
+  final TextStyle textStyle;
+  final Widget prefixIcon, suffixIcon;
+  final InputBorder enabledBorder, focusedBorder;
 
   SearchWidget({
     Key key,
@@ -29,6 +37,19 @@ class SearchWidget<T> extends StatefulWidget {
     this.listContainerHeight,
     this.hintText,
     @required this.queryBuilder,
+    this.noFoundWidget = _noItemFound,
+    this.padding = const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+    this.contentPadding = const EdgeInsets.only(
+      left: 16,
+      right: 20,
+      top: 14,
+      bottom: 14,
+    ),
+    this.textStyle = const TextStyle(fontSize: 16),
+    this.prefixIcon,
+    this.suffixIcon,
+    this.enabledBorder,
+    this.focusedBorder,
   }) : super(key: key);
 
   @override
@@ -99,27 +120,25 @@ class MySingleChoiceSearchState<T> extends State<SearchWidget<T>> {
         widget.listContainerHeight ?? MediaQuery.of(context).size.height / 4;
 
     textField = Padding(
-      padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+      padding: widget.padding,
       child: TextField(
         controller: _controller,
         focusNode: _focusNode,
-        style: TextStyle(fontSize: 16, color: Colors.grey[600]),
+        style: widget.textStyle,
         decoration: InputDecoration(
-          enabledBorder: OutlineInputBorder(
-            borderSide: BorderSide(color: Color(0x4437474F)),
-          ),
-          focusedBorder: OutlineInputBorder(
-            borderSide: BorderSide(color: Theme.of(context).primaryColor),
-          ),
-          suffixIcon: Icon(Icons.search),
+          enabledBorder: widget.enabledBorder ??
+              OutlineInputBorder(
+                borderSide: BorderSide(color: Color(0x4437474F)),
+              ),
+          focusedBorder: widget.focusedBorder ??
+              OutlineInputBorder(
+                borderSide: BorderSide(color: Theme.of(context).primaryColor),
+              ),
+          suffixIcon: widget.suffixIcon,
+          prefixIcon: widget.prefixIcon,
           border: InputBorder.none,
           hintText: widget.hintText ?? "Search here...",
-          contentPadding: EdgeInsets.only(
-            left: 16,
-            right: 20,
-            top: 14,
-            bottom: 14,
-          ),
+          contentPadding: widget.contentPadding,
         ),
         onChanged: (text) {
           if (text.trim().length > 0) {
@@ -244,7 +263,7 @@ class MySingleChoiceSearchState<T> extends State<SearchWidget<T>> {
                         itemCount: _tempList.length,
                       ),
                     )
-                  : NoItemFound(),
+                  : widget.noFoundWidget,
             ),
           ),
         ),
