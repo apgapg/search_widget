@@ -103,7 +103,7 @@ class _HomePageState extends State<HomePage> {
                   );
                 },
                 // widget customization
-                noFoundWidget: Row(
+                noItemsFoundWidget: Row(
                   mainAxisSize: MainAxisSize.min,
                   children: <Widget>[
                     Icon(

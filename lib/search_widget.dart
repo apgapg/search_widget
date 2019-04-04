@@ -27,7 +27,7 @@ class SearchWidget<T> extends StatefulWidget {
   final String hintText;
   final QueryBuilder<T> queryBuilder;
   final TextFieldBuilder textFieldBuilder;
-  final Widget noFoundWidget;
+  final Widget noItemsFoundWidget;
 
   SearchWidget({
     Key key,
@@ -38,7 +38,7 @@ class SearchWidget<T> extends StatefulWidget {
     this.listContainerHeight,
     this.hintText,
     @required this.queryBuilder,
-    this.noFoundWidget,
+    this.noItemsFoundWidget,
     this.textFieldBuilder,
   }) : super(key: key);
 
@@ -253,9 +253,9 @@ class MySingleChoiceSearchState<T> extends State<SearchWidget<T>> {
                           itemCount: _tempList.length,
                         ),
                       )
-                    : widget.noFoundWidget != null
+                    : widget.noItemsFoundWidget != null
                         ? Center(
-                            child: widget.noFoundWidget,
+                            child: widget.noItemsFoundWidget,
                           )
                         : NoItemFound(),
               ),
