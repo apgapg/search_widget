@@ -51,13 +51,7 @@ class _HomePageState extends State<HomePage> {
                 hideSearchBoxWhenItemSelected: false,
                 listContainerHeight: MediaQuery.of(context).size.height / 4,
                 queryBuilder: (String query, List<LeaderBoard> list) {
-                  return list
-                      .where(
-                        (LeaderBoard item) => item.username.toLowerCase().contains(
-                              query.toLowerCase(),
-                            ),
-                      )
-                      .toList();
+                  return list.where((LeaderBoard item) => item.username.toLowerCase().contains(query.toLowerCase())).toList();
                 },
                 popupListItemBuilder: (LeaderBoard item) {
                   return Container(

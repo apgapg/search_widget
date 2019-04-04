@@ -24,7 +24,6 @@ class SearchWidget<T> extends StatefulWidget {
   final SelectedItemBuilder<T> selectedItemBuilder;
   final hideSearchBoxWhenItemSelected;
   final double listContainerHeight;
-  final String hintText;
   final QueryBuilder<T> queryBuilder;
   final TextFieldBuilder textFieldBuilder;
   final Widget noItemsFoundWidget;
@@ -36,7 +35,6 @@ class SearchWidget<T> extends StatefulWidget {
     @required this.selectedItemBuilder,
     this.hideSearchBoxWhenItemSelected = false,
     this.listContainerHeight,
-    this.hintText,
     @required this.queryBuilder,
     this.noItemsFoundWidget,
     this.textFieldBuilder,
