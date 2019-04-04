@@ -5,7 +5,6 @@ import 'package:search_widget/search_widget.dart';
 void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -44,44 +43,62 @@ class _HomePageState extends State<HomePage> {
           padding: EdgeInsets.symmetric(vertical: 16.0),
           child: Column(
             children: <Widget>[
-              Container(height: 200.0,child: Text("Random space"),alignment: Alignment.center,color: Colors.grey[200],padding: EdgeInsets.all(16.0),),
+              Container(
+                height: 200.0,
+                child: Text("Random space"),
+                alignment: Alignment.center,
+                color: Colors.grey[200],
+                padding: EdgeInsets.all(16.0),
+              ),
               SearchWidget<LeaderBoard>(
                 dataList: list,
                 hideSearchBoxWhenItemSelected: false,
                 listContainerHeight: MediaQuery.of(context).size.height / 4,
                 queryBuilder: (String query, List<LeaderBoard> list) {
-                  return list.where((LeaderBoard item) => item.username.toLowerCase().contains(query.toLowerCase())).toList();
+                  return list
+                      .where(
+                        (LeaderBoard item) => item.username
+                            .toLowerCase()
+                            .contains(query.toLowerCase()),
+                      )
+                      .toList();
                 },
                 popupListItemBuilder: (LeaderBoard item) {
                   return Container(
-                    padding: const EdgeInsets.only(left: 12.0, right: 12.0, top: 12.0, bottom: 12.0),
-                    child: new Text(
+                    padding: const EdgeInsets.all(12.0),
+                    child: Text(
                       item.username,
-                      style: new TextStyle(fontSize: 16.0),
+                      style: TextStyle(fontSize: 16.0),
                     ),
                   );
                 },
-                selectedItemBuilder: (LeaderBoard selectedItem, deleteSelectedItem) {
+                selectedItemBuilder: (
+                  LeaderBoard selectedItem,
+                  deleteSelectedItem,
+                ) {
                   return Container(
-                    padding: EdgeInsets.symmetric(vertical: 2.0, horizontal: 4.0),
+                    padding: EdgeInsets.symmetric(
+                      vertical: 2.0,
+                      horizontal: 4.0,
+                    ),
                     child: Row(
                       children: <Widget>[
                         Expanded(
                           child: Padding(
-                            padding: const EdgeInsets.only(left: 16, right: 16, top: 8, bottom: 8),
-                            child: new Text(
+                            padding: const EdgeInsets.only(
+                              left: 16,
+                              right: 16,
+                              top: 8,
+                              bottom: 8,
+                            ),
+                            child: Text(
                               selectedItem.username,
-                              style: new TextStyle(
-                                fontSize: 14,
-                              ),
+                              style: TextStyle(fontSize: 14),
                             ),
                           ),
                         ),
                         IconButton(
-                          icon: Icon(
-                            Icons.delete_outline,
-                            size: 22,
-                          ),
+                          icon: Icon(Icons.delete_outline, size: 22),
                           color: Colors.grey[700],
                           onPressed: deleteSelectedItem,
                         ),
@@ -90,8 +107,13 @@ class _HomePageState extends State<HomePage> {
                   );
                 },
               ),
-              Container(height: 600.0,child: Text("Random space"),alignment: Alignment.center,color: Colors.grey[200],padding: EdgeInsets.all(16.0),),
-
+              Container(
+                height: 600.0,
+                child: Text("Random space"),
+                alignment: Alignment.center,
+                color: Colors.grey[200],
+                padding: EdgeInsets.all(16.0),
+              ),
             ],
           ),
         ),
