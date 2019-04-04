@@ -43,23 +43,114 @@ selectedItemBuilder: (LeaderBoard selectedItem, deleteSelectedItem) {
    return SelectedItem(selectedItem,deleteSelectedItem);
  }
 ```
-
-
+- Option for providing custom TextField. Accepts TextEditingController and FocusNode as parameter
+```dart
+textFieldBuilder: (TextEditingController controller, FocusNode focusNode) {
+    return TextField(
+        controller: controller,
+        focusNode: focusNode,
+        //... Other customizations here
+       );
+  },
+```
 ### Full Implementation
 ```dart
 SearchWidget<LeaderBoard>(
- dataList: list,
- hideSearchBoxWhenItemSelected: false,
- listContainerHeight: MediaQuery.of(context).size.height / 4,
- queryBuilder: (String query, List<LeaderBoard> list) {
-   return list.where((LeaderBoard item) => item.username.toLowerCase().contains(query.toLowerCase())).toList();
- },
- popupListItemBuilder: (LeaderBoard item) {
-   return PopupListItem(item);
- },
- selectedItemBuilder: (LeaderBoard selectedItem, deleteSelectedItem) {
-   return SelectedItem(selectedItem,deleteSelectedItem);
- },
+  dataList: list,
+  hideSearchBoxWhenItemSelected: false,
+  listContainerHeight: MediaQuery.of(context).size.height / 4,
+  queryBuilder: (String query, List<LeaderBoard> list) {
+    return list.where((LeaderBoard item) => item.username.toLowerCase().contains(query.toLowerCase())).toList();
+  },
+  popupListItemBuilder: (LeaderBoard item) {
+    return Container(
+      padding: const EdgeInsets.all(12.0),
+      child: Text(
+        item.username,
+        style: TextStyle(fontSize: 16.0),
+      ),
+    );
+  },
+  selectedItemBuilder: (
+    LeaderBoard selectedItem,
+    deleteSelectedItem,
+  ) {
+    return Container(
+      padding: EdgeInsets.symmetric(
+        vertical: 2.0,
+        horizontal: 4.0,
+      ),
+      child: Row(
+        children: <Widget>[
+          Expanded(
+            child: Padding(
+              padding: const EdgeInsets.only(
+                left: 16,
+                right: 16,
+                top: 8,
+                bottom: 8,
+             ),
+            child: Text(
+               selectedItem.username,
+               style: TextStyle(fontSize: 14),
+              ),
+            ),
+          ),
+          IconButton(
+            icon: Icon(Icons.delete_outline, size: 22),
+            color: Colors.grey[700],
+            onPressed: deleteSelectedItem,
+          ),
+        ],
+      ),
+    );
+  },
+  // widget customization
+  noItemsFoundWidget: Row(
+    mainAxisSize: MainAxisSize.min,
+    children: <Widget>[
+      Icon(
+        Icons.folder_open,
+        size: 24,
+        color: Colors.grey[900].withOpacity(0.7),
+      ),
+      SizedBox(width: 10.0),
+      Text(
+        "No Items Found",
+        style: TextStyle(
+          fontSize: 16.0,
+          color: Colors.grey[900].withOpacity(0.7),
+        ),
+      ),
+    ],
+  ),
+  textFieldBuilder: (TextEditingController controller, FocusNode focusNode) {
+    return Padding(
+      padding: EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+      child: TextField(
+        controller: controller,
+        focusNode: focusNode,
+        style: new TextStyle(fontSize: 16, color: Colors.grey[600]),
+        decoration: InputDecoration(
+          enabledBorder: OutlineInputBorder(
+            borderSide: BorderSide(color: Color(0x4437474F)),
+          ),
+          focusedBorder: OutlineInputBorder(
+            borderSide: BorderSide(color: Theme.of(context).primaryColor),
+          ),
+          suffixIcon: Icon(Icons.search),
+          border: InputBorder.none,
+          hintText: "Search here...",
+          contentPadding: EdgeInsets.only(
+            left: 16,
+            right: 20,
+            top: 14,
+            bottom: 14,
+          ),
+        ),
+      ),
+    );
+  },
 )
 ```
 ### Key Highlights
