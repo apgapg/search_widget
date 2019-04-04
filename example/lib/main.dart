@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:search_widget/search_widget.dart';
+import 'package:search_widget/widget/no_item_found.dart';
 
 void main() => runApp(MyApp());
 
@@ -106,6 +107,22 @@ class _HomePageState extends State<HomePage> {
                     ),
                   );
                 },
+                // widget customization
+                noFoundWidget: NoItemFound(
+                  title: 'No items found',
+                  icon: Icons.cancel,
+                ),
+                padding: EdgeInsets.all(8),
+                contentPadding: EdgeInsets.all(16),
+                textStyle: TextStyle(fontSize: 20),
+                prefixIcon: Icon(Icons.search),
+                suffixIcon: Icon(Icons.list),
+                enabledBorder: OutlineInputBorder(
+                  borderSide: BorderSide(color: Color(0x4437474F)),
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderSide: BorderSide(color: Theme.of(context).primaryColor),
+                ),
               ),
               Container(
                 height: 600.0,
