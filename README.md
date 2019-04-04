@@ -105,7 +105,6 @@ SearchWidget<LeaderBoard>(
       ),
     );
   },
-  // widget customization
   noItemsFoundWidget: Row(
     mainAxisSize: MainAxisSize.min,
     children: <Widget>[
