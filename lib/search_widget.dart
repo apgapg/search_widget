@@ -124,7 +124,11 @@ class MySingleChoiceSearchState<T> extends State<SearchWidget<T>> {
 
   @override
   Widget build(BuildContext context) {
-    listContainerHeight = widget.listContainerHeight ?? MediaQuery.of(context).size.height / 4;
+    listContainerHeight =
+        widget.listContainerHeight ?? MediaQuery
+            .of(context)
+            .size
+            .height / 4;
     textField = widget.textFieldBuilder != null
         ? widget.textFieldBuilder(_controller, _focusNode)
         : Padding(
@@ -221,7 +225,9 @@ class MySingleChoiceSearchState<T> extends State<SearchWidget<T>> {
           child: CompositedTransformFollower(
             offset: Offset(
               0,
-              height - position.bottom < listContainerHeight ? (textBoxHeight + 6.0) : -(listContainerHeight - 8.0),
+              height - position.bottom < listContainerHeight
+                  ? (textBoxHeight + 6.0)
+                  : -(listContainerHeight - 8.0),
             ),
             showWhenUnlinked: false,
             link: this._layerLink,
@@ -247,7 +253,8 @@ class MySingleChoiceSearchState<T> extends State<SearchWidget<T>> {
                                   child: widget.popupListItemBuilder(
                                     _tempList.elementAt(index),
                                   ),
-                                  onTap: () => onDropDownItemTap(_tempList[index]),
+                                  onTap: () =>
+                                      onDropDownItemTap(_tempList[index]),
                                 ),
                               ),
                           itemCount: _tempList.length,
