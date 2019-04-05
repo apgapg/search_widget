@@ -1,3 +1,7 @@
+import 'package:example/widget/my_text_field.dart';
+import 'package:example/widget/no_items_found.dart';
+import 'package:example/widget/popup_list_item_widget.dart';
+import 'package:example/widget/selected_item_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:search_widget/search_widget.dart';
@@ -53,93 +57,15 @@ class _HomePageState extends State<HomePage> {
                   return list.where((LeaderBoard item) => item.username.toLowerCase().contains(query.toLowerCase())).toList();
                 },
                 popupListItemBuilder: (LeaderBoard item) {
-                  return Container(
-                    padding: const EdgeInsets.all(12.0),
-                    child: Text(
-                      item.username,
-                      style: TextStyle(fontSize: 16.0),
-                    ),
-                  );
+                  return PopupListItemWidget(item);
                 },
-                selectedItemBuilder: (
-                  LeaderBoard selectedItem,
-                  deleteSelectedItem,
-                ) {
-                  return Container(
-                    padding: EdgeInsets.symmetric(
-                      vertical: 2.0,
-                      horizontal: 4.0,
-                    ),
-                    child: Row(
-                      children: <Widget>[
-                        Expanded(
-                          child: Padding(
-                            padding: const EdgeInsets.only(
-                              left: 16,
-                              right: 16,
-                              top: 8,
-                              bottom: 8,
-                            ),
-                            child: Text(
-                              selectedItem.username,
-                              style: TextStyle(fontSize: 14),
-                            ),
-                          ),
-                        ),
-                        IconButton(
-                          icon: Icon(Icons.delete_outline, size: 22),
-                          color: Colors.grey[700],
-                          onPressed: deleteSelectedItem,
-                        ),
-                      ],
-                    ),
-                  );
+                selectedItemBuilder: (LeaderBoard selectedItem, VoidCallback deleteSelectedItem) {
+                  return SelectedItemWidget(selectedItem, deleteSelectedItem);
                 },
                 // widget customization
-                noItemsFoundWidget: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: <Widget>[
-                    Icon(
-                      Icons.folder_open,
-                      size: 24,
-                      color: Colors.grey[900].withOpacity(0.7),
-                    ),
-                    SizedBox(width: 10.0),
-                    Text(
-                      "No Items Found",
-                      style: TextStyle(
-                        fontSize: 16.0,
-                        color: Colors.grey[900].withOpacity(0.7),
-                      ),
-                    ),
-                  ],
-                ),
+                noItemsFoundWidget: NoItemsFound(),
                 textFieldBuilder: (TextEditingController controller, FocusNode focusNode) {
-                  return Padding(
-                    padding: EdgeInsets.symmetric(vertical: 8, horizontal: 16),
-                    child: TextField(
-                      controller: controller,
-                      focusNode: focusNode,
-                      style: new TextStyle(fontSize: 16, color: Colors.grey[600]),
-                      decoration: InputDecoration(
-                        enabledBorder: OutlineInputBorder(
-                          borderSide: BorderSide(color: Color(0x4437474F)),
-                        ),
-                        focusedBorder: OutlineInputBorder(
-                          borderSide: BorderSide(color: Theme.of(context).primaryColor),
-                        ),
-                        suffixIcon: Icon(Icons.search),
-                        border: InputBorder.none,
-                        hintText: "Search here...",
-                        contentPadding: EdgeInsets.only(
-                          left: 16,
-                          right: 20,
-                          top: 14,
-                          bottom: 14,
-                        ),
-                      ),
-                    ),
-                  );
+                  return MyTextField(controller, focusNode);
                 },
               ),
             ],
