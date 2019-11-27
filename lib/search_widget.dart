@@ -106,7 +106,10 @@ class MySingleChoiceSearchState<T> extends State<SearchWidget<T>> {
       } else {
         _tempList.clear();
         _tempList.addAll(_list);
-        overlayEntry.markNeedsBuild();
+        if (overlayEntry == null)
+          onTap();
+        else
+          overlayEntry.markNeedsBuild();
       }
     });
     KeyboardVisibilityNotification().addNewListener(
