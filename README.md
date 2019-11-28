@@ -88,9 +88,9 @@ SearchWidget<LeaderBoard>(
 
 ## TODO
 
+- [X] Give support for onItemSelected method to return selected item(s) directly
 - [ ] Add support for selecting multiple items
 - [ ] Add visibility bool to show selected item widget
-- [ ] Give support for onSelectedItem method to return selected item(s) directly
 
 # ⭐ My Flutter Packages
 - [pie_chart](https://pub.dartlang.org/packages/pie_chart)  [![GitHub stars](https://img.shields.io/github/stars/apgapg/pie_chart.svg?style=social)](https://github.com/apgapg/pie_chart)  Flutter Pie Chart with cool animation.
