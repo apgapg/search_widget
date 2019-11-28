@@ -63,14 +63,10 @@ class _HomePageState extends State<HomePage> {
             SearchWidget<LeaderBoard>(
               dataList: list,
               hideSearchBoxWhenItemSelected: false,
-              listContainerHeight: MediaQuery
-                  .of(context)
-                  .size
-                  .height / 4,
+              listContainerHeight: MediaQuery.of(context).size.height / 4,
               queryBuilder: (query, list) {
                 return list
-                    .where((item) =>
-                    item.username
+                    .where((item) => item.username
                         .toLowerCase()
                         .contains(query.toLowerCase()))
                     .toList();
@@ -174,9 +170,7 @@ class MyTextField extends StatelessWidget {
             ),
           ),
           focusedBorder: OutlineInputBorder(
-            borderSide: BorderSide(color: Theme
-                .of(context)
-                .primaryColor),
+            borderSide: BorderSide(color: Theme.of(context).primaryColor),
           ),
           suffixIcon: Icon(Icons.search),
           border: InputBorder.none,

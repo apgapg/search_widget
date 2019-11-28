@@ -25,7 +25,17 @@ import 'package:search_widget/search_widget.dart';
 ```
 
 ### Add Search Widget
+
 - Accepts data list as input
+- Option for getting selected item. Returns selected item or null if item is deleted
+```dart
+onItemSelected: (item) {
+    //Do whatever you would like
+    setState(() {
+       _selectedItem = item;
+    });
+ },
+```
 - Option for pop list item builder. This basically returns a widget to show as list item in popup
 ```dart
 popupListItemBuilder: (LeaderBoard item) {
@@ -55,6 +65,7 @@ textFieldBuilder: (TextEditingController controller, FocusNode focusNode) {
   },
 ```
 ### Full Implementation
+
 ```dart
 SearchWidget<LeaderBoard>(
    dataList: list,
@@ -77,6 +88,7 @@ SearchWidget<LeaderBoard>(
  )
 ```
 ### Key Highlights
+
 - Adaptive Popup Position to prevent popup getting hidden behind keyboard   
 
 <img src="https://raw.githubusercontent.com/apgapg/search_widget/master/src/s2.gif"  height = "400" alt="PieChart"> <img src="https://raw.githubusercontent.com/apgapg/search_widget/master/src/s1.gif" style="margin: 0px 4px"  height = "400" alt="PieChart">
@@ -95,11 +107,12 @@ SearchWidget<LeaderBoard>(
 # ⭐ My Flutter Packages
 - [pie_chart](https://pub.dartlang.org/packages/pie_chart)  [![GitHub stars](https://img.shields.io/github/stars/apgapg/pie_chart.svg?style=social)](https://github.com/apgapg/pie_chart)  Flutter Pie Chart with cool animation.
 - [avatar_glow](https://pub.dartlang.org/packages/avatar_glow)  [![GitHub stars](https://img.shields.io/github/stars/apgapg/avatar_glow.svg?style=social)](https://github.com/apgapg/avatar_glow)  Flutter Avatar Glow Widget with glowing animation.
-
+- [json_table](https://pub.dartlang.org/packages/json_table)  [![GitHub stars](https://img.shields.io/github/stars/apgapg/json_table.svg?style=social)](https://github.com/apgapg/json_table)  Create Flutter Json Table from json map directly.
+- [animating_location_pin](https://pub.dev/packages/animating_location_pin)  [![GitHub stars](https://img.shields.io/github/stars/apgapg/animating_location_pin.svg?style=social)](https://github.com/apgapg/animating_location_pin)  Flutter Animating Location Pin Widget providing Animating Location Pin Widget which can be used while fetching device location.
+          
 # ⭐ My Flutter Apps
 - [flutter_profile](https://github.com/apgapg/flutter_profile)  [![GitHub stars](https://img.shields.io/github/stars/apgapg/flutter_profile.svg?style=social)](https://github.com/apgapg/flutter_profile)  Showcase My Portfolio: Ayush P Gupta on Playstore.
 - [flutter_sankalan](https://github.com/apgapg/flutter_sankalan)  [![GitHub stars](https://img.shields.io/github/stars/apgapg/flutter_sankalan.svg?style=social)](https://github.com/apgapg/flutter_sankalan)  Flutter App which allows reading/uploading short stories.
-
 
 # 👍 Contribution
 1. Fork it
