@@ -1,6 +1,6 @@
 name: search_widget
 description: A Flutter package which provides a Search Widget for selecting an option from a data list.
-version: 0.2.0
+version: 1.0.0
 author: Ayush P Gupta <ayushpguptaapg@gmail.com>
 homepage: https://github.com/apgapg/search_widget
 
