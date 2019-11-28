@@ -98,9 +98,7 @@ class MySingleChoiceSearchState<T> extends State<SearchWidget<T>> {
     });
     _controller.addListener(() {
       final text = _controller.text;
-      if (text
-          .trim()
-          .isNotEmpty) {
+      if (text.trim().isNotEmpty) {
         _tempList.clear();
         final filterList = widget.queryBuilder(text, widget.dataList);
         if (filterList == null) {
@@ -145,43 +143,38 @@ class MySingleChoiceSearchState<T> extends State<SearchWidget<T>> {
   @override
   Widget build(BuildContext context) {
     listContainerHeight =
-        widget.listContainerHeight ?? MediaQuery
-            .of(context)
-            .size
-            .height / 4;
+        widget.listContainerHeight ?? MediaQuery.of(context).size.height / 4;
     textField = widget.textFieldBuilder != null
         ? widget.textFieldBuilder(_controller, _focusNode)
         : Padding(
-      padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
-      child: TextField(
-        controller: _controller,
-        focusNode: _focusNode,
-        style: TextStyle(fontSize: 16, color: Colors.grey[600]),
-        decoration: InputDecoration(
-          enabledBorder: const OutlineInputBorder(
-            borderSide: BorderSide(
-              color: Color(0x4437474F),
+            padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+            child: TextField(
+              controller: _controller,
+              focusNode: _focusNode,
+              style: TextStyle(fontSize: 16, color: Colors.grey[600]),
+              decoration: InputDecoration(
+                enabledBorder: const OutlineInputBorder(
+                  borderSide: BorderSide(
+                    color: Color(0x4437474F),
+                  ),
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderSide: BorderSide(
+                    color: Theme.of(context).primaryColor,
+                  ),
+                ),
+                suffixIcon: Icon(Icons.search),
+                border: InputBorder.none,
+                hintText: "Search here...",
+                contentPadding: const EdgeInsets.only(
+                  left: 16,
+                  right: 20,
+                  top: 14,
+                  bottom: 14,
+                ),
+              ),
             ),
-          ),
-          focusedBorder: OutlineInputBorder(
-            borderSide: BorderSide(
-              color: Theme
-                  .of(context)
-                  .primaryColor,
-            ),
-          ),
-          suffixIcon: Icon(Icons.search),
-          border: InputBorder.none,
-          hintText: "Search here...",
-          contentPadding: const EdgeInsets.only(
-            left: 16,
-            right: 20,
-            top: 14,
-            bottom: 14,
-          ),
-        ),
-      ),
-    );
+          );
 
     final column = Column(
       mainAxisSize: MainAxisSize.min,
@@ -223,7 +216,9 @@ class MySingleChoiceSearchState<T> extends State<SearchWidget<T>> {
       isFocused = false;
       isRequiredCheckFailed = false;
     });
-    widget.onItemSelected(item);
+    if (widget.onItemSelected != null) {
+      widget.onItemSelected(item);
+    }
   }
 
   void onTap() {
@@ -245,10 +240,7 @@ class MySingleChoiceSearchState<T> extends State<SearchWidget<T>> {
     );
     overlayEntry = OverlayEntry(
       builder: (context) {
-        final height = MediaQuery
-            .of(context)
-            .size
-            .height;
+        final height = MediaQuery.of(context).size.height;
         return Positioned(
           left: position.left,
           width: width,
@@ -274,8 +266,7 @@ class MySingleChoiceSearchState<T> extends State<SearchWidget<T>> {
                     ? Scrollbar(
                         child: ListView.separated(
                           padding: const EdgeInsets.symmetric(vertical: 4),
-                          separatorBuilder: (context, index) =>
-                          const Divider(
+                          separatorBuilder: (context, index) => const Divider(
                             height: 1,
                           ),
                           itemBuilder: (context, index) => Material(
@@ -294,7 +285,7 @@ class MySingleChoiceSearchState<T> extends State<SearchWidget<T>> {
                         ? Center(
                             child: widget.noItemsFoundWidget,
                           )
-                    : const NoItemFound(),
+                        : const NoItemFound(),
               ),
             ),
           ),
@@ -306,6 +297,8 @@ class MySingleChoiceSearchState<T> extends State<SearchWidget<T>> {
 
   void onDeleteSelectedItem() {
     setState(() => notifier.value = null);
-    widget.onItemSelected(null);
+    if (widget.onItemSelected != null) {
+      widget.onItemSelected(null);
+    }
   }
 }
