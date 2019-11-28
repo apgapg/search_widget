@@ -39,54 +39,67 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   List<LeaderBoard> list = <LeaderBoard>[
-    LeaderBoard("Flutter", 54.0),
+    LeaderBoard("Flutter", 54),
     LeaderBoard("React", 22.5),
     LeaderBoard("Ionic", 24.7),
     LeaderBoard("Xamarin", 22.1),
   ];
 
+  LeaderBoard _selectedItem;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Search Widget"),
+        title: const Text("Search Widget"),
       ),
-      body: Container(
-        child: SingleChildScrollView(
-          padding: EdgeInsets.symmetric(vertical: 16.0),
-          child: Column(
-            children: <Widget>[
-              SizedBox(
-                height: 16.0,
-              ),
-              SearchWidget<LeaderBoard>(
-                dataList: list,
-                hideSearchBoxWhenItemSelected: false,
-                listContainerHeight: MediaQuery.of(context).size.height / 4,
-                queryBuilder: (String query, List<LeaderBoard> list) {
-                  return list
-                      .where((LeaderBoard item) =>
-                      item.username
-                          .toLowerCase()
-                          .contains(query.toLowerCase()))
-                      .toList();
-                },
-                popupListItemBuilder: (LeaderBoard item) {
-                  return PopupListItemWidget(item);
-                },
-                selectedItemBuilder: (LeaderBoard selectedItem,
-                    VoidCallback deleteSelectedItem) {
-                  return SelectedItemWidget(selectedItem, deleteSelectedItem);
-                },
-                // widget customization
-                noItemsFoundWidget: NoItemsFound(),
-                textFieldBuilder:
-                    (TextEditingController controller, FocusNode focusNode) {
-                  return MyTextField(controller, focusNode);
-                },
-              ),
-            ],
-          ),
+      body: SingleChildScrollView(
+        padding: const EdgeInsets.symmetric(vertical: 16),
+        child: Column(
+          children: <Widget>[
+            const SizedBox(
+              height: 16,
+            ),
+            SearchWidget<LeaderBoard>(
+              dataList: list,
+              hideSearchBoxWhenItemSelected: false,
+              listContainerHeight: MediaQuery
+                  .of(context)
+                  .size
+                  .height / 4,
+              queryBuilder: (query, list) {
+                return list
+                    .where((item) =>
+                    item.username
+                        .toLowerCase()
+                        .contains(query.toLowerCase()))
+                    .toList();
+              },
+              popupListItemBuilder: (item) {
+                return PopupListItemWidget(item);
+              },
+              selectedItemBuilder: (selectedItem, deleteSelectedItem) {
+                return SelectedItemWidget(selectedItem, deleteSelectedItem);
+              },
+              // widget customization
+              noItemsFoundWidget: NoItemsFound(),
+              textFieldBuilder: (controller, focusNode) {
+                return MyTextField(controller, focusNode);
+              },
+              onItemSelected: (item) {
+                setState(() {
+                  _selectedItem = item;
+                });
+              },
+            ),
+            const SizedBox(
+              height: 32,
+            ),
+            Text(
+              "${_selectedItem != null ? _selectedItem.username : ""
+                  "No item selected"}",
+            ),
+          ],
         ),
       ),
     );
@@ -94,24 +107,24 @@ class _HomePageState extends State<HomePage> {
 }
 
 class LeaderBoard {
+  LeaderBoard(this.username, this.score);
+
   final String username;
   final double score;
-
-  LeaderBoard(this.username, this.score);
 }
 
 class SelectedItemWidget extends StatelessWidget {
+  const SelectedItemWidget(this.selectedItem, this.deleteSelectedItem);
+
   final LeaderBoard selectedItem;
   final VoidCallback deleteSelectedItem;
-
-  SelectedItemWidget(this.selectedItem, this.deleteSelectedItem);
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.symmetric(
-        vertical: 2.0,
-        horizontal: 4.0,
+      padding: const EdgeInsets.symmetric(
+        vertical: 2,
+        horizontal: 4,
       ),
       child: Row(
         children: <Widget>[
@@ -125,7 +138,7 @@ class SelectedItemWidget extends StatelessWidget {
               ),
               child: Text(
                 selectedItem.username,
-                style: TextStyle(fontSize: 14),
+                style: const TextStyle(fontSize: 14),
               ),
             ),
           ),
@@ -141,22 +154,24 @@ class SelectedItemWidget extends StatelessWidget {
 }
 
 class MyTextField extends StatelessWidget {
+  const MyTextField(this.controller, this.focusNode);
+
   final TextEditingController controller;
   final FocusNode focusNode;
-
-  MyTextField(this.controller, this.focusNode);
 
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+      padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
       child: TextField(
         controller: controller,
         focusNode: focusNode,
-        style: new TextStyle(fontSize: 16, color: Colors.grey[600]),
+        style: TextStyle(fontSize: 16, color: Colors.grey[600]),
         decoration: InputDecoration(
-          enabledBorder: OutlineInputBorder(
-            borderSide: BorderSide(color: Color(0x4437474F)),
+          enabledBorder: const OutlineInputBorder(
+            borderSide: BorderSide(
+              color: Color(0x4437474F),
+            ),
           ),
           focusedBorder: OutlineInputBorder(
             borderSide: BorderSide(color: Theme
@@ -166,7 +181,7 @@ class MyTextField extends StatelessWidget {
           suffixIcon: Icon(Icons.search),
           border: InputBorder.none,
           hintText: "Search here...",
-          contentPadding: EdgeInsets.only(
+          contentPadding: const EdgeInsets.only(
             left: 16,
             right: 20,
             top: 14,
@@ -181,41 +196,39 @@ class MyTextField extends StatelessWidget {
 class NoItemsFound extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: <Widget>[
-          Icon(
-            Icons.folder_open,
-            size: 24,
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      children: <Widget>[
+        Icon(
+          Icons.folder_open,
+          size: 24,
+          color: Colors.grey[900].withOpacity(0.7),
+        ),
+        const SizedBox(width: 10),
+        Text(
+          "No Items Found",
+          style: TextStyle(
+            fontSize: 16,
             color: Colors.grey[900].withOpacity(0.7),
           ),
-          SizedBox(width: 10.0),
-          Text(
-            "No Items Found",
-            style: TextStyle(
-              fontSize: 16.0,
-              color: Colors.grey[900].withOpacity(0.7),
-            ),
-          ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 }
 
 class PopupListItemWidget extends StatelessWidget {
-  final LeaderBoard item;
+  const PopupListItemWidget(this.item);
 
-  PopupListItemWidget(this.item);
+  final LeaderBoard item;
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.all(12.0),
+      padding: const EdgeInsets.all(12),
       child: Text(
         item.username,
-        style: TextStyle(fontSize: 16.0),
+        style: const TextStyle(fontSize: 16),
       ),
     );
   }

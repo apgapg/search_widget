@@ -6,7 +6,7 @@ import 'package:keyboard_visibility/keyboard_visibility.dart';
 import 'widget/no_item_found.dart';
 
 typedef QueryListItemBuilder<T> = Widget Function(T item);
-typedef OnItemSelected<T> = T Function(T item);
+typedef OnItemSelected<T> = void Function(T item);
 typedef SelectedItemBuilder<T> = Widget Function(
   T item,
   VoidCallback deleteSelectedItem,
@@ -25,9 +25,9 @@ class SearchWidget<T> extends StatefulWidget {
     @required this.dataList,
     @required this.popupListItemBuilder,
     @required this.selectedItemBuilder,
-    @required this.onItemSelected,
     @required this.queryBuilder,
     Key key,
+    this.onItemSelected,
     this.hideSearchBoxWhenItemSelected = false,
     this.listContainerHeight,
     this.noItemsFoundWidget,
