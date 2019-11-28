@@ -1,7 +1,7 @@
 container:
   image: 'cirrusci/flutter:latest'
 task:
-  name: 'PieChart Test'
+  name: 'Search Widget Test'
   pub_cache:
     folder: ~/.pub-cache
   test_script: 'flutter test'
