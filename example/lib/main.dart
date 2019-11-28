@@ -1,8 +1,22 @@
+import 'dart:io';
+
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:search_widget/search_widget.dart';
 
-void main() => runApp(MyApp());
+// Sets a platform override for desktop to avoid exceptions. See
+// https://flutter.dev/desktop#target-platform-override for more info.
+void enablePlatformOverrideForDesktop() {
+  if (!kIsWeb && (Platform.isMacOS || Platform.isWindows || Platform.isLinux)) {
+    debugDefaultTargetPlatformOverride = TargetPlatform.fuchsia;
+  }
+}
+
+void main() {
+  enablePlatformOverrideForDesktop();
+  runApp(MyApp());
+}
 
 class MyApp extends StatelessWidget {
   @override
@@ -50,17 +64,24 @@ class _HomePageState extends State<HomePage> {
                 hideSearchBoxWhenItemSelected: false,
                 listContainerHeight: MediaQuery.of(context).size.height / 4,
                 queryBuilder: (String query, List<LeaderBoard> list) {
-                  return list.where((LeaderBoard item) => item.username.toLowerCase().contains(query.toLowerCase())).toList();
+                  return list
+                      .where((LeaderBoard item) =>
+                      item.username
+                          .toLowerCase()
+                          .contains(query.toLowerCase()))
+                      .toList();
                 },
                 popupListItemBuilder: (LeaderBoard item) {
                   return PopupListItemWidget(item);
                 },
-                selectedItemBuilder: (LeaderBoard selectedItem, VoidCallback deleteSelectedItem) {
+                selectedItemBuilder: (LeaderBoard selectedItem,
+                    VoidCallback deleteSelectedItem) {
                   return SelectedItemWidget(selectedItem, deleteSelectedItem);
                 },
                 // widget customization
                 noItemsFoundWidget: NoItemsFound(),
-                textFieldBuilder: (TextEditingController controller, FocusNode focusNode) {
+                textFieldBuilder:
+                    (TextEditingController controller, FocusNode focusNode) {
                   return MyTextField(controller, focusNode);
                 },
               ),
