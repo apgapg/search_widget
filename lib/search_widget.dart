@@ -1,7 +1,7 @@
 library search_widget;
 
 import 'package:flutter/material.dart';
-import 'package:keyboard_visibility/keyboard_visibility.dart';
+import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
 
 import 'widget/no_item_found.dart';
 
