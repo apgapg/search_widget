@@ -1,3 +1,7 @@
+## [1.0.1]
+- Migrate example to AndroidX
+- Fix Android crash due to redundant keyboard package
+
 ## [1.0.0]
 
 * Fix [#3](https://github.com/apgapg/search_widget/issues/3) Add onItemSelected method for getting selected item
