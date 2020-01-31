@@ -301,4 +301,13 @@ class MySingleChoiceSearchState<T> extends State<SearchWidget<T>> {
       widget.onItemSelected(null);
     }
   }
+
+  @override
+  void dispose() {
+    if (overlayEntry != null) {
+      overlayEntry.remove();
+    }
+    overlayEntry = null;
+    super.dispose();
+  }
 }

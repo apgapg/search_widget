@@ -47,6 +47,8 @@ class _HomePageState extends State<HomePage> {
 
   LeaderBoard _selectedItem;
 
+  bool _show = true;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -60,34 +62,35 @@ class _HomePageState extends State<HomePage> {
             const SizedBox(
               height: 16,
             ),
-            SearchWidget<LeaderBoard>(
-              dataList: list,
-              hideSearchBoxWhenItemSelected: false,
-              listContainerHeight: MediaQuery.of(context).size.height / 4,
-              queryBuilder: (query, list) {
-                return list
-                    .where((item) => item.username
-                        .toLowerCase()
-                        .contains(query.toLowerCase()))
-                    .toList();
-              },
-              popupListItemBuilder: (item) {
-                return PopupListItemWidget(item);
-              },
-              selectedItemBuilder: (selectedItem, deleteSelectedItem) {
-                return SelectedItemWidget(selectedItem, deleteSelectedItem);
-              },
-              // widget customization
-              noItemsFoundWidget: NoItemsFound(),
-              textFieldBuilder: (controller, focusNode) {
-                return MyTextField(controller, focusNode);
-              },
-              onItemSelected: (item) {
-                setState(() {
-                  _selectedItem = item;
-                });
-              },
-            ),
+            if (_show)
+              SearchWidget<LeaderBoard>(
+                dataList: list,
+                hideSearchBoxWhenItemSelected: false,
+                listContainerHeight: MediaQuery.of(context).size.height / 4,
+                queryBuilder: (query, list) {
+                  return list
+                      .where((item) => item.username
+                          .toLowerCase()
+                          .contains(query.toLowerCase()))
+                      .toList();
+                },
+                popupListItemBuilder: (item) {
+                  return PopupListItemWidget(item);
+                },
+                selectedItemBuilder: (selectedItem, deleteSelectedItem) {
+                  return SelectedItemWidget(selectedItem, deleteSelectedItem);
+                },
+                // widget customization
+                noItemsFoundWidget: NoItemsFound(),
+                textFieldBuilder: (controller, focusNode) {
+                  return MyTextField(controller, focusNode);
+                },
+                onItemSelected: (item) {
+                  setState(() {
+                    _selectedItem = item;
+                  });
+                },
+              ),
             const SizedBox(
               height: 32,
             ),
@@ -97,6 +100,14 @@ class _HomePageState extends State<HomePage> {
             ),
           ],
         ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          setState(() {
+            _show = !_show;
+          });
+        },
+        child: Icon(Icons.swap_horizontal_circle),
       ),
     );
   }
