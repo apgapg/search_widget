@@ -1,3 +1,6 @@
+## [1.0.2]
+- Fix [#10](https://github.com/apgapg/search_widget/issues/10) Remove overlay on dispose
+
 ## [1.0.1]
 - Migrate example to AndroidX
 - Fix Android crash due to redundant keyboard package
