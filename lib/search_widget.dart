@@ -123,13 +123,11 @@ class MySingleChoiceSearchState<T> extends State<SearchWidget<T>> {
         }
       }
     });
-    KeyboardVisibilityNotification().addNewListener(
-      onChange: (visible) {
-        if (!visible) {
-          _focusNode.unfocus();
-        }
-      },
-    );
+    KeyboardVisibility.onChange.listen((visible) {
+      if (!visible) {
+        _focusNode.unfocus();
+      }
+    });
   }
 
   @override
