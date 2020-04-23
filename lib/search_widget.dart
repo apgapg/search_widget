@@ -63,7 +63,6 @@ class MySingleChoiceSearchState<T> extends State<SearchWidget<T>> {
   double listContainerHeight;
   final LayerLink _layerLink = LayerLink();
   final double textBoxHeight = 48;
-  final TextEditingController textController = TextEditingController();
 
   @override
   void initState() {
