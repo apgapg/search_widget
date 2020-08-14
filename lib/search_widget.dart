@@ -63,6 +63,7 @@ class MySingleChoiceSearchState<T> extends State<SearchWidget<T>> {
   double listContainerHeight;
   final LayerLink _layerLink = LayerLink();
   final double textBoxHeight = 48;
+  final TextEditingController textController = TextEditingController();
 
   @override
   void initState() {
@@ -122,11 +123,13 @@ class MySingleChoiceSearchState<T> extends State<SearchWidget<T>> {
         }
       }
     });
-    KeyboardVisibility.onChange.listen((visible) {
-      if (!visible) {
-        _focusNode.unfocus();
-      }
-    });
+    KeyboardVisibilityNotification().addNewListener(
+      onChange: (visible) {
+        if (!visible) {
+          _focusNode.unfocus();
+        }
+      },
+    );
   }
 
   @override
@@ -238,54 +241,67 @@ class MySingleChoiceSearchState<T> extends State<SearchWidget<T>> {
     overlayEntry = OverlayEntry(
       builder: (context) {
         final height = MediaQuery.of(context).size.height;
-        return Positioned(
-          left: position.left,
-          width: width,
-          child: CompositedTransformFollower(
-            offset: Offset(
-              0,
-              height - position.bottom < listContainerHeight
-                  ? (textBoxHeight + 6.0)
-                  : -(listContainerHeight - 8.0),
-            ),
-            showWhenUnlinked: false,
-            link: _layerLink,
-            child: Container(
-              height: listContainerHeight,
-              margin: const EdgeInsets.symmetric(horizontal: 12),
-              child: Card(
-                color: Colors.white,
-                elevation: 5,
-                shape: const RoundedRectangleBorder(
-                  borderRadius: BorderRadius.all(Radius.circular(4)),
-                ),
-                child: _tempList.isNotEmpty
-                    ? Scrollbar(
-                        child: ListView.separated(
-                          padding: const EdgeInsets.symmetric(vertical: 4),
-                          separatorBuilder: (context, index) => const Divider(
-                            height: 1,
-                          ),
-                          itemBuilder: (context, index) => Material(
-                            color: Colors.transparent,
-                            child: InkWell(
-                              onTap: () => onDropDownItemTap(_tempList[index]),
-                              child: widget.popupListItemBuilder(
-                                _tempList.elementAt(index),
-                              ),
-                            ),
-                          ),
-                          itemCount: _tempList.length,
-                        ),
-                      )
-                    : widget.noItemsFoundWidget != null
-                        ? Center(
-                            child: widget.noItemsFoundWidget,
-                          )
-                        : const NoItemFound(),
+        return Stack(
+          children: <Widget>[
+            Positioned.fill(
+                child: GestureDetector(
+              onTap: dismissMenu,
+              child: Container(
+                color: Colors.transparent,
               ),
-            ),
-          ),
+            )),
+            Positioned(
+              left: position.left,
+              width: width,
+              child: CompositedTransformFollower(
+                offset: Offset(
+                  0,
+                  height - position.bottom < listContainerHeight
+                      ? (textBoxHeight + 6.0)
+                      : -(listContainerHeight - 8.0),
+                ),
+                showWhenUnlinked: false,
+                link: _layerLink,
+                child: Container(
+                  height: listContainerHeight,
+                  margin: const EdgeInsets.symmetric(horizontal: 12),
+                  child: Card(
+                    color: Colors.white,
+                    elevation: 5,
+                    shape: const RoundedRectangleBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(4)),
+                    ),
+                    child: _tempList.isNotEmpty
+                        ? Scrollbar(
+                            child: ListView.separated(
+                              padding: const EdgeInsets.symmetric(vertical: 4),
+                              separatorBuilder: (context, index) =>
+                                  const Divider(
+                                height: 1,
+                              ),
+                              itemBuilder: (context, index) => Material(
+                                color: Colors.transparent,
+                                child: InkWell(
+                                  onTap: () =>
+                                      onDropDownItemTap(_tempList[index]),
+                                  child: widget.popupListItemBuilder(
+                                    _tempList.elementAt(index),
+                                  ),
+                                ),
+                              ),
+                              itemCount: _tempList.length,
+                            ),
+                          )
+                        : widget.noItemsFoundWidget != null
+                            ? Center(
+                                child: widget.noItemsFoundWidget,
+                              )
+                            : const NoItemFound(),
+                  ),
+                ),
+              ),
+            )
+          ],
         );
       },
     );
@@ -296,6 +312,15 @@ class MySingleChoiceSearchState<T> extends State<SearchWidget<T>> {
     setState(() => notifier.value = null);
     if (widget.onItemSelected != null) {
       widget.onItemSelected(null);
+    }
+  }
+
+  void dismissMenu() {
+    if (overlayEntry != null) {
+      overlayEntry.remove();
+      overlayEntry = null;
+      _controller.clear();
+      _focusNode.unfocus();
     }
   }
 
