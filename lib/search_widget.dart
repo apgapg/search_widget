@@ -108,7 +108,9 @@ class MySingleChoiceSearchState<T> extends State<SearchWidget<T>> {
         }
         _tempList.addAll(filterList);
         if (overlayEntry == null) {
-          onTap();
+          if (_focusNode.hasFocus) {
+            onTap();
+          }
         } else {
           overlayEntry.markNeedsBuild();
         }
