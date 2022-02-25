@@ -2,7 +2,6 @@ import 'dart:io';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:search_widget/search_widget.dart';
 
 // Sets a platform override for desktop to avoid exceptions. See
@@ -45,7 +44,7 @@ class _HomePageState extends State<HomePage> {
     LeaderBoard("Xamarin", 22.1),
   ];
 
-  LeaderBoard _selectedItem;
+  LeaderBoard? _selectedItem;
 
   bool _show = true;
 
@@ -95,7 +94,7 @@ class _HomePageState extends State<HomePage> {
               height: 32,
             ),
             Text(
-              "${_selectedItem != null ? _selectedItem.username : ""
+              "${_selectedItem != null ? _selectedItem!.username : ""
                   "No item selected"}",
             ),
           ],
@@ -107,7 +106,7 @@ class _HomePageState extends State<HomePage> {
             _show = !_show;
           });
         },
-        child: Icon(Icons.swap_horizontal_circle),
+        child: const Icon(Icons.swap_horizontal_circle),
       ),
     );
   }
@@ -150,7 +149,7 @@ class SelectedItemWidget extends StatelessWidget {
             ),
           ),
           IconButton(
-            icon: Icon(Icons.delete_outline, size: 22),
+            icon: const Icon(Icons.delete_outline, size: 22),
             color: Colors.grey[700],
             onPressed: deleteSelectedItem,
           ),
@@ -164,7 +163,7 @@ class MyTextField extends StatelessWidget {
   const MyTextField(this.controller, this.focusNode);
 
   final TextEditingController controller;
-  final FocusNode focusNode;
+  final FocusNode? focusNode;
 
   @override
   Widget build(BuildContext context) {
@@ -183,7 +182,7 @@ class MyTextField extends StatelessWidget {
           focusedBorder: OutlineInputBorder(
             borderSide: BorderSide(color: Theme.of(context).primaryColor),
           ),
-          suffixIcon: Icon(Icons.search),
+          suffixIcon: const Icon(Icons.search),
           border: InputBorder.none,
           hintText: "Search here...",
           contentPadding: const EdgeInsets.only(
@@ -207,14 +206,14 @@ class NoItemsFound extends StatelessWidget {
         Icon(
           Icons.folder_open,
           size: 24,
-          color: Colors.grey[900].withOpacity(0.7),
+          color: Colors.grey[900]!.withOpacity(0.7),
         ),
         const SizedBox(width: 10),
         Text(
           "No Items Found",
           style: TextStyle(
             fontSize: 16,
-            color: Colors.grey[900].withOpacity(0.7),
+            color: Colors.grey[900]!.withOpacity(0.7),
           ),
         ),
       ],
